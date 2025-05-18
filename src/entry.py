@@ -5,12 +5,8 @@ from to_rss_xml import to_rss_xml
 
 
 async def on_fetch(request, env):
-    # return Response("Hello world!")
     queries = parse_qs(urlparse(request.url.lower()).query)
     if "albumid" in queries:
-        # album_id = queries["albumId"][0]
-        # album = await get_album(album_id)
-        # return Response(album)
         try:
             return Response(
                 to_rss_xml(await get_album(queries["albumid"][0])).toxml(),
