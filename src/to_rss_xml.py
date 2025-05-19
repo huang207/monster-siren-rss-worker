@@ -1,6 +1,6 @@
 from xml.dom import minidom
 
-def to_rss_xml(album_data: dict) -> minidom.Document:
+def to_rss_xml(album_data: dict, new_feed_url: str = None) -> minidom.Document:
     """
     Convert the album data to RSS XML format.
     """
@@ -35,6 +35,11 @@ def to_rss_xml(album_data: dict) -> minidom.Document:
     language = doc.createElement("language")
     language.appendChild(doc.createTextNode("zh-CN"))
     channel.appendChild(language)
+
+    if new_feed_url:
+        itunes_new_feed_url = doc.createElement("itunes:new-feed-url")
+        itunes_new_feed_url.appendChild(doc.createTextNode(new_feed_url))
+        channel.appendChild(itunes_new_feed_url)
 
     itunes_explicit = doc.createElement("itunes:explicit")
     itunes_explicit.appendChild(doc.createTextNode("clean"))
