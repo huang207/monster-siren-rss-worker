@@ -7,7 +7,7 @@ from to_rss_xml import to_rss_xml
 class Router:
     def __init__(self, request: Request):
         self.routes = {}
-        self.url = request.url.lower()
+        self.url = request.url
         self.path = urlparse(request.url.lower()).path
         self.command = request.method
         self.headers = request.headers
