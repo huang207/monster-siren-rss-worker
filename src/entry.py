@@ -18,22 +18,14 @@ class Router:
 
     async def do_GET(self):
         try:
-            if self.path == "/rss":
-                if "albumid" in self.query:
-                    return Response(
-                        to_rss_xml(await get_album(self.query["albumid"][0])).toxml(),
-                        headers={"Content-Type": "application/rss+xml;charset=UTF-8"},
-                    )
-                else:
-                    return Response("Invalid Request", status=400)
-            if self.path == "/":
+            if self.path == ("/rss" or "/"):
                 if "albumid" in self.query:
                     return Response(
                         to_rss_xml(
                             await get_album(self.query["albumid"][0]),
                             urlunparse(urlparse(self.url)._replace(path="/rss")),
                         ).toxml(),
-                        headers={"Content-Type": "application/rss+xml;charset=UTF-8"},
+                        headers={"Content-Type": "application/rss+xml"},
                     )
                 else:
                     return Response("Invalid Request", status=400)
