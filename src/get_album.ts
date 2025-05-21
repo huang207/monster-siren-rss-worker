@@ -67,12 +67,17 @@ export async function get_album(album_id: string) {
             continue;
         }
 
+        const pubDateRegex = /\/(\d{4})(\d{2})(\d{2})\//;
+        const pubDateMatch = pubDateRegex.exec(song_details['sourceUrl']);
+        const pubDate = pubDateMatch ? new Date(`${pubDateMatch[1]}-${pubDateMatch[2]}-${pubDateMatch[3]}T00:00:00+0800`) : null;
+
         album_data["songs"].push({
-            "id": song_id,
-            "name": song_name,
-            "artistes": song_artistes,
-            "url": song_details['sourceUrl'],
-            "lyric": song_details['lyricUrl'],
+            id: song_id,
+            name: song_name,
+            artistes: song_artistes,
+            pubDate: pubDate ?? undefined,
+            url: song_details['sourceUrl'],
+            lyric: song_details['lyricUrl'],
         });
     }
 

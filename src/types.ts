@@ -1,8 +1,12 @@
 // 公共类型定义文件
 export type Song = {
     id: any;
+    order?: number | string;
     name: any;
-    artistes: string;
+    artistes?: string;
+    desc?: string;
+    pubDate?: Date;
+    cover?: string;
     url: any;
     lyric: any;
 };
