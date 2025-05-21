@@ -1,7 +1,7 @@
 import type { Song, AlbumData } from "./types";
 
 export function toRssXml(albumData: AlbumData, newFeedUrl?: string): string {
-    const escape = (str: any) => String(str ?? '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]!));
+    const escape = (str: any) => String(str ?? '').replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]!));
     let rss = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     rss += `<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">\n`;
     rss += `<channel>\n`;
@@ -27,9 +27,21 @@ export function toRssXml(albumData: AlbumData, newFeedUrl?: string): string {
         rss += `<guid isPermaLink="false">https://monster-siren.hypergryph.com/music/${escape(song.id)}</guid>`;
         rss += `<enclosure url="${escape(song.url)}" length="0" type="audio/wav"/>`;
         rss += `<itunes:explicit>clean</itunes:explicit>`;
-        rss += `<itunes:image href="${escape(albumData.cover)}"/>`;
+        if (song.desc) {
+            rss += `<description>${escape(song.desc)}</description>`;
+        }
+        if (song.cover) {
+            rss += `<itunes:image href="${escape(song.cover)}"/>`;
+        }
+        if (song.pubDate) {
+            rss += `<pubDate>${song.pubDate.toUTCString()}</pubDate>`;
+        }
         rss += `<itunes:duration>0</itunes:duration>`;
-        rss += `<itunes:episode>${i + 1}</itunes:episode>`;
+        if (song.order) {
+            rss += `<itunes:episode>${song.order}</itunes:episode>`;
+        } else {
+            rss += `<itunes:episode>${i + 1}</itunes:episode>`;
+        }
         rss += `</item>\n`;
     }
     rss += `</channel>\n</rss>`;
