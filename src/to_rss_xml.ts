@@ -37,11 +37,7 @@ export async function toRssXml(albumData: AlbumData, newFeedUrl?: string): Promi
             rss += `<pubDate>${song.pubDate.toUTCString()}</pubDate>`;
         }
         rss += `<itunes:duration>0</itunes:duration>`;
-        if (song.order) {
-            rss += `<itunes:episode>${song.order}</itunes:episode>`;
-        } else {
-            rss += `<itunes:episode>${i + 1}</itunes:episode>`;
-        }
+        rss += `<itunes:episode>${song.order ?? i + 1}</itunes:episode>`;
         rss += `</item>\n`;
     }
     rss += `</channel>\n</rss>`;
