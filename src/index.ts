@@ -34,11 +34,19 @@ class Router {
         if (this.path === '/rss' || this.path === '/') {
             if ("albumid" in this.params) {
                 try {
-                    return new Response(toRssXml(await get_album(this.params["albumid"])), {
-                        headers: {
-                            'Content-Type': 'application/rss+xml'
+                    // Create a new URL with the same base and params, but path set to "/rss"
+                    const originalUrl = new URL(this.url);
+                    const rssUrl = new URL(originalUrl.origin + '/rss');
+                    rssUrl.search = originalUrl.search;
+
+                    return new Response(
+                        toRssXml(await get_album(this.params["albumid"]), rssUrl.toString()),
+                        {
+                            headers: {
+                                'Content-Type': 'application/rss+xml'
+                            }
                         }
-                    })
+                    );
                 }
                 catch (error) {
                     console.error('Error fetching album:', error);
