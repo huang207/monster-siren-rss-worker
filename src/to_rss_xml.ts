@@ -25,7 +25,7 @@ export function toRssXml(albumData: AlbumData, newFeedUrl?: string): string {
         rss += `<item>`;
         rss += `<title>${escape(song.name)}</title>`;
         rss += `<guid isPermaLink="false">https://monster-siren.hypergryph.com/music/${escape(song.id)}</guid>`;
-        rss += `<enclosure url="${escape(song.url)}"/>`;
+        rss += `<enclosure url="${escape(song.url)}" length="0" type="audio/wav"/>`;
         rss += `<itunes:explicit>clean</itunes:explicit>`;
         if (song.desc) {
             rss += `<description>${escape(song.desc)}</description>`;
