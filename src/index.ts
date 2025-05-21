@@ -36,7 +36,7 @@ class Router {
                 try {
                     return new Response(toRssXml(await get_album(this.params["albumid"])), {
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/rss+xml'
                         }
                     })
                 }
@@ -70,12 +70,6 @@ export default {
         if (response) {
             return response;
         }
-        var respone = await fetch('https://monster-siren.hypergryph.com/api/album/9377/detail');
-        return new Response(respone.body, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        return new Response('Hello World!');
+        return new Response('Internal Server Error', { status: 500 });
     },
 } satisfies ExportedHandler<Env>;
