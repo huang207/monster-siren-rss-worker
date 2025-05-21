@@ -8,6 +8,8 @@ export type Song = {
     pubDate?: Date;
     cover?: string;
     url: any;
+    contentType?: String;
+    contentLength?: number;
     lyric: any;
 };
 

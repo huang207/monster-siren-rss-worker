@@ -67,9 +67,21 @@ export async function get_album(album_id: string) {
             continue;
         }
 
-        const pubDateRegex = /\/(\d{4})(\d{2})(\d{2})\//;
-        const pubDateMatch = pubDateRegex.exec(song_details['sourceUrl']);
-        const pubDate = pubDateMatch ? new Date(`${pubDateMatch[1]}-${pubDateMatch[2]}-${pubDateMatch[3]}T00:00:00+0800`) : null;
+        // const pubDateRegex = /\/(\d{4})(\d{2})(\d{2})\//;
+        // const pubDateMatch = pubDateRegex.exec(song_details['sourceUrl']);
+        // const pubDate = pubDateMatch ? new Date(`${pubDateMatch[1]}-${pubDateMatch[2]}-${pubDateMatch[3]}T00:00:00+0800`) : null;
+        let pubDate: Date | null = null;
+        let contentType: String | null = null;
+        let contentLength: number | null = null;
+        const headResp = await fetch(song_details['sourceUrl'], { method: "HEAD" });
+        if (headResp.ok) {
+            contentType = headResp.headers.get("Content-Type");
+            contentLength = parseInt(headResp.headers.get("Content-Length") ?? "0");
+            const lastModified = headResp.headers.get("Last-Modified");
+            if (lastModified) {
+                pubDate = new Date(lastModified);
+            }
+        }
 
         album_data["songs"].push({
             id: song_id,
@@ -77,6 +89,8 @@ export async function get_album(album_id: string) {
             artistes: song_artistes,
             pubDate: pubDate ?? undefined,
             url: song_details['sourceUrl'],
+            contentType: contentType ?? undefined,
+            contentLength: contentLength ?? undefined,
             lyric: song_details['lyricUrl'],
         });
     }

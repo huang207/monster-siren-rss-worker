@@ -40,7 +40,7 @@ class Router {
                     rssUrl.search = originalUrl.search;
 
                     return new Response(
-                        toRssXml(await get_album(this.params["albumid"]), rssUrl.toString()),
+                        await toRssXml(await get_album(this.params["albumid"]), rssUrl.toString()),
                         {
                             headers: {
                                 'Content-Type': 'application/rss+xml'
